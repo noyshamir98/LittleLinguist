@@ -1,0 +1,30 @@
+<form #registrationForm="ngForm" (ngSubmit)="onSubmitRegistration(registrationForm)" class="form-container">
+    <div class="form-row">
+      <mat-form-field>
+        <label>Category Name:</label>
+        <input matInput [(ngModel)]="currentcategory.name" name="name" required>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <label>Source Language:</label>
+        <input matInput [(ngModel)]="currentcategory.origin" name="sourceLanguage" required readonly>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <label>Target Language:</label>
+        <input matInput [(ngModel)]="currentcategory.target" name="targetLanguage" required readonly>
+      </mat-form-field>
+    </div>
+  
+ 
+    <div>
+      Words <button mat-raised-button color="primary" (click)="addNewWord()">Add new words</button>
+    </div>
+  
+ 
+  
+    <button class="save" mat-raised-button color="primary" [disabled]="registrationForm.invalid || registrationForm.pristine" (click)="onSaveCategory()">שמור</button>
+  </form>
+  

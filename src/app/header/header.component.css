@@ -1,0 +1,11 @@
+.toolbar-icons {
+    flex: 1 1 auto;
+   }
+   .toolbar-icon {
+    padding-left: 8px;
+   }
+   .namegame{
+    padding-left: 600px;
+    color: rgb(223, 219, 219);
+   }
+   
