@@ -1,5 +1,5 @@
-import { Language, TranslatedWord } from "./language";
-
+import { Language } from "./language";
+import { TranslatedWord } from "./translateword";
 export class Category {
   id : number;
   name : string;
@@ -17,7 +17,6 @@ export class Category {
       this.origin = origin;
       this.target = target;
   }
-
 }
 
   

@@ -1,13 +1,15 @@
 <div>
-  <mat-table [dataSource]="categories">
+  <mat-table [dataSource]="categories" matSort>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>  Category Name </mat-header-cell>
       <mat-cell *matCellDef="let category"> {{ category.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="words">
       <mat-header-cell *matHeaderCellDef> Words </mat-header-cell>
-      <mat-cell *matCellDef="let category"> {{ category.words }} </mat-cell>
+      <mat-cell *matCellDef="let category">  
+        {{ category.words.length }}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="lastModified">
@@ -30,7 +32,9 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  <button mat-raised-button color="warn" (click)="navigateToNewCategory()">
+  <div class="add">
+  <button   mat-raised-button color="warn" (click)="navigateToNewCategory()">
     Add
   </button>
+</div>
 </div>

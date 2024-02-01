@@ -1,30 +1,56 @@
-<form #registrationForm="ngForm" (ngSubmit)="onSubmitRegistration(registrationForm)" class="form-container">
-    <div class="form-row">
-      <mat-form-field>
-        <label>Category Name:</label>
-        <input matInput [(ngModel)]="currentcategory.name" name="name" required>
-      </mat-form-field>
-    </div>
-    <div class="form-row">
-      <mat-form-field>
-        <label>Source Language:</label>
-        <input matInput [(ngModel)]="currentcategory.origin" name="sourceLanguage" required readonly>
-      </mat-form-field>
-    </div>
-    <div class="form-row">
-      <mat-form-field>
-        <label>Target Language:</label>
-        <input matInput [(ngModel)]="currentcategory.target" name="targetLanguage" required readonly>
-      </mat-form-field>
-    </div>
-  
- 
-    <div>
-      Words <button mat-raised-button color="primary" (click)="addNewWord()">Add new words</button>
-    </div>
-  
- 
-  
-    <button class="save" mat-raised-button color="primary" [disabled]="registrationForm.invalid || registrationForm.pristine" (click)="onSaveCategory()">שמור</button>
-  </form>
-  
+
+<form #registrationForm="ngForm" (ngSubmit)="onSubmitRegistration()" class="form-container">
+  <div class="form-row">
+    <mat-form-field>
+      <label>Category Name:</label>
+      <input matInput [(ngModel)]="currentCategory.name" name="name" required>
+    </mat-form-field>
+  </div>
+  <div class="form-row">
+    <mat-form-field>
+      <label>target Language:</label>
+      <input matInput [(ngModel)]="currentCategory.target" name="target" required readonly>
+    </mat-form-field>
+  </div>
+  <div class="form-row">
+    <mat-form-field>
+      <label>origin Language:</label>
+      <input matInput [(ngModel)]="currentCategory.origin" name="origin" required readonly>
+    </mat-form-field>
+  </div>
+  <div>
+  <button mat-raised-button color="primary" (click)="addNewWord()">Add new words</button>
+  </div>
+  <table>
+    <thead>
+    </thead>
+    <tbody>
+      <tr *ngFor="let word of currentCategory.words; let i = index" >
+        <td>
+          <mat-form-field>
+            <mat-label>Origin:</mat-label>
+            <input matInput [(ngModel)]="word.origin" name="origin-{{i}}" pattern="[a-zA-Z\s]*" #originInput="ngModel"required>
+            <mat-error>
+              origin word should contain only English letters and cannot be empty.
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <mat-label>Target:</mat-label>
+            <input matInput [(ngModel)]="word.target" name="target-{{i}}" pattern="[\u0590-\u05ea]*" required>
+            <mat-error >
+              Target word should contain only Hebrew letters and cannot be empty.
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <button type="button" mat-icon-button (click)="removeNewWord(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="save" mat-raised-button color="primary" [disabled]="registrationForm.invalid || registrationForm.pristine"  (click)="onSaveCategory()">שמור</button>
+</form>

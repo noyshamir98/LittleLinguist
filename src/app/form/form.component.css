@@ -5,9 +5,8 @@
     max-width: 200px;
     margin: auto;
     padding: 20px;
-    margin-left: 0%; /* הוסף ערך מתאים לפי הצורך */
+    margin-left: 0%;
 }
-
 .form-row {
     width: 100%;
     margin-bottom: 16px;
@@ -26,3 +25,14 @@ button {
   left: 50%;
   transform: translateX(-50%)
 }
+.addNewWord{
+    padding-left: 700px;
+    font-size: 20px;
+}
+div {
+    display: flex;
+    align-items: center;
+  }
+  button[color="primary"] {
+    margin-left: 10px; /* Adjust the margin as needed */
+  }

@@ -4,11 +4,11 @@ import { Category } from '../share/model/category';
 @Injectable({
   providedIn: 'root'
 })
-export class PersonService {
-  categories  = new Map<number, Category>();
+export class categoryService {
+ private categories  = new Map<number, Category>();
   nextId = 0;
-
-  
+  constructor() {  
+  }
 
   list(): Category[] {
     return Array.from(this.categories.values());
@@ -38,9 +38,7 @@ export class PersonService {
     }
   }
 
-  constructor() {
-    
-   }
+ 
 
 
 }

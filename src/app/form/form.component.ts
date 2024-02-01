@@ -1,108 +1,71 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PersonService } from '../services/person.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { categoryService } from '../services/category.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog'; // הוספת import עבור MatDialog
-import { FormsModule, NgForm } from '@angular/forms'; // הוספת import עבור NgForm
-import { Router } from '@angular/router';
-import { Language, TranslatedWord } from '../share/model/language';
+import { MatDialog } from '@angular/material/dialog'; 
+import { FormsModule, NgForm, NgModel } from '@angular/forms'; 
+import { ActivatedRoute, Router } from '@angular/router';
+import { Language } from '../share/model/language';
 import { Category } from '../share/model/category';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-
-
+import { TranslatedWord } from '../share/model/translateword';
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [FormsModule, MatIconModule,MatButtonModule, CommonModule, MatInputModule, MatFormFieldModule,MatTableModule],
+  imports: [FormsModule, MatIconModule, MatButtonModule, CommonModule, MatInputModule, MatFormFieldModule, MatTableModule],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
+
+
   @Input() idString?: string;
-  @Output() registrationComplete: EventEmitter<Category> = new EventEmitter<Category>();
-  ngOnInit(): void {
-    if (this.idString) {
-    let id:number = parseInt(this.idString);
-    const category = this.personService.get(id);
-    if (category) {
-    this.currentcategory = category;
-    }
-    }}
+  currentCategory: Category =  new Category(0, '' , Language.English, Language.Hebrew)
+  constructor(private categoryService: categoryService, private router: Router, private route: ActivatedRoute) {
     
-  displayedColumns: string[] =
- ['origin','target', 'actions'];
-
-  currentcategory: Category = {
-    name: '',
-    id: 0,
-    origin: Language.English,
-    target: Language.Hebrew,
-    words: [],
-    lastUpdateDate: new Date,
   }
-
-  newWords: TranslatedWord[] = [];
-
-  constructor(private personService: PersonService, private router: Router, private dialog: MatDialog) {}
-
-  navigateToNewCategory(): void {
-    this.router.navigate(['/your-new-category-route']);
-  }
- 
-  // פונקציה לשליחת הטופס
-  onSubmitRegistration(registrationForm: NgForm) {
-    this.currentcategory.words.push(...this.newWords);
+  ngOnInit(): void {
+        if (this.idString) {
+          let id: number = parseInt(this.idString);
+          this.idString = this.idString;
+          const category = this.categoryService.get(id);
+          if (category) {
+            this.currentCategory = category;
+          } 
+        }   
+    }
+  onSubmitRegistration() {
     if (this.idString) {
-      this.personService.update(this.currentcategory);
+      this.categoryService.update(this.currentCategory);
     } else {
-      this.personService.add(this.currentcategory);
+      this.categoryService.add(this.currentCategory);
+      this.idString = this.currentCategory.id.toString();
     }
-
-    // איפוס המילים החדשות והטופס
-    this.currentcategory.words = [];
-
-    // מעבר לדף אחר או כל פעולה נדרשת
-  
-  }
-  showNewWordInputs = false;
-  // פונקציה למחיקת מילה
-  deleteWordPair(index: number): void {
-    this.currentcategory.words.splice(index, 1);
-  }
-
-  // פונקציה להוספת מילה חדשה
-  addNewWord(): void {
-    this.showWordPairsTable = true;
-    this.newWords.push({ origin: '', target: '' });
   }
   
+  addNewWord() {
+    const newWord = new TranslatedWord("", '');
+    this.currentCategory.words.push(newWord);
+  }
   removeNewWord(index: number): void {
-    this.newWords.splice(index, 1);
-    if (this.newWords.length === 0) {
-      this.showWordPairsTable = false;
-    }
-  }
-
+    this.currentCategory.words.splice(index, 1);
+   }
+  
 onSaveCategory(): void {
+  if (this.hasAtLeastOneWordPair()) {
+  } 
 
-  this.currentcategory.words.push(...this.newWords);
-  
-  
-  // איפוס המילים החדשות והטופס
-  this.newWords = [];
-
-  // מעבר לדף אחר, במקרה זה - מסך הראשי
   this.navigateToMainScreen();
 }
-
-// ...
-
-// פונקציה לניווט למסך הראשי
 navigateToMainScreen(): void {
-  this.router.navigate(['/']); // כדי לניווט למסך הראשי
+  this.router.navigate(['/']); 
 }
 showWordPairsTable: boolean = false;
+hasAtLeastOneWordPair(): boolean {
+  return this.currentCategory.words.length > 0;
+}
+
 }
